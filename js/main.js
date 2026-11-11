@@ -29,21 +29,102 @@ const zapatillas = [nike, adidas, jordan]
 
 let total = 0
 
-const calcularTotal = function (total, precio) {
-    return total + precio
+const calcularTotal = (total, precio) => total + precio
+
+const buscarZapatilla = () => {
+    const nombreBuscado = prompt("¿Qué zapatilla querés buscar?")
+
+    const resultadoBusqueda = zapatillas.find(
+        zapatilla => zapatilla.nombre.toLowerCase() === nombreBuscado.trim().toLowerCase()
+    )
+
+    if (resultadoBusqueda !== undefined) {
+        console.log("Zapatilla encontrada:", resultadoBusqueda)
+    } else {
+        console.log("No encontramos esa zapatilla")
+    }
 }
 
-const mostrarTotal = (total) => {
-    console.log ("el total de tu compra es: $" + total)
+
+const buscarPorPresupuesto = () => {
+    const presupuesto = Number(prompt("¿Cuánto dinero tenés para gastar?"))
+
+    const zapatillasPorPresupuesto = zapatillas.filter(
+        zapatilla => zapatilla.precio <= presupuesto && zapatilla.stock > 0
+    )
+
+    console.log("Zapatillas dentro de tu presupuesto:", zapatillasPorPresupuesto)
 }
 
 
-function saludar(nombre) {
-    console.log("Bienvenido " + nombre)
+const mostrarPreciosTransferencia = () => {
+    const preciosTransferencia = zapatillas.map(zapatilla => ({
+        nombre: zapatilla.nombre,
+        precioOriginal: zapatilla.precio,
+        precioTransferencia: zapatilla.precio * 0.80
+    }))
+
+    console.log("Precios con descuento:", preciosTransferencia)
 }
 
-const nombre = prompt ("cual es tu nombre?")
-saludar (nombre)
+const venderProducto = (zapatilla) => {
+    if (zapatilla.stock > 0) {
+        zapatilla.vender()
+        total = calcularTotal(total, zapatilla.precio)
+        console.log(zapatilla.nombre + " agregada al carrito")
+    } else {
+        console.log("No hay stock disponible")
+    }
+}
+
+
+const comprarZapatillas = () => {
+    
+let continuar = "si"
+while (continuar === "si") {
+
+    let opcion = prompt (
+    "Elegi una zapatilla:\n" +
+    "1 - Nike Air Force\n" + 
+    "2 - Adidas Campus\n" +
+    "3- Jordan Retro 4"
+)
+
+switch (opcion) {
+    case "1":
+        venderProducto(nike)
+        break
+
+    case "2":
+        venderProducto(adidas)
+        break
+
+    case "3":
+        venderProducto(jordan)
+        break
+
+    default:
+        console.log("Producto no disponible")
+}
+
+
+continuar = prompt ("desea continuar comprando? si/no")
+if (continuar === "si") {
+    console.log ("Continuemos comprando")
+}
+else {
+    console.log("El total de tu compra es: $" + total)
+    console.log("Stock final de Nike: " + nike.stock)
+    console.log("Stock final de Adidas: " + adidas.stock)
+    console.log("Stock final de Jordan: " + jordan.stock)
+    console.log("Gracias por tu compra " + nombre)
+}
+}
+}
+
+
+const nombre = prompt("¿Cuál es tu nombre?")
+console.log("Bienvenido " + nombre)
 
 
 const opcionMenu = prompt(
@@ -59,37 +140,15 @@ const opcionMenu = prompt(
 switch (opcionMenu) {
 
     case "1":
-        const nombreBuscado = prompt("¿Qué zapatilla querés buscar?")
-
-        const resultadoBusqueda = zapatillas.find((zapatilla) => {
-        return zapatilla.nombre.toLowerCase() === nombreBuscado.trim().toLowerCase()
-        })
-
-    if (resultadoBusqueda !== undefined) {
-        console.log("Zapatilla encontrada:", resultadoBusqueda)
-    } else {
-        console.log("No encontramos esa zapatilla")
-    }
-    break
+        buscarZapatilla()
+        break
 
     case "2":
-        const presupuesto = Number(prompt("¿Cuánto dinero tenés para gastar?"))
-
-        const zapatillasPorPresupuesto = zapatillas.filter((zapatilla) => {
-        return zapatilla.precio <= presupuesto && zapatilla.stock > 0
-        })
-        console.log("Zapatillas dentro de tu presupuesto:", zapatillasPorPresupuesto)
+        buscarPorPresupuesto()
         break
 
     case "3":
-        const preciosTransferencia = zapatillas.map((zapatilla) => {
-        return {
-        nombre: zapatilla.nombre,
-        precioOriginal: zapatilla.precio,
-        precioTransferencia: zapatilla.precio * 0.80
-    }
-    })
-console.log("Precios con descuento:", preciosTransferencia)
+        mostrarPreciosTransferencia()
         break
 
     case "4":
@@ -105,105 +164,3 @@ console.log("Precios con descuento:", preciosTransferencia)
 }
 
 
-
-// const zapatillasDisponibles = [
-//     "nike air force",
-//     "adidas campus",
-//     "jordan retro 4",
-//     "nike dunk",
-//     "adidas samba"
-// ]
-
-// zapatillasDisponibles.push("new balance 550")
-// const zapatillasEliminada = zapatillasDisponibles.pop()
-// console.log ("se ah eliminado la zapatilla " + zapatillasEliminada) 
-
-// const zapatillaBuscada = prompt ("Que zapas buscas?")
-// if (zapatillasDisponibles.includes(zapatillaBuscada)) {
-//     const posicion = zapatillasDisponibles.indexOf(zapatillaBuscada)
-
-//     console.log ("la zapatilla " + zapatillaBuscada + " esta disponible")
-//     console.log ("se encuentra en el indice: " + posicion)
-// }
-
-// else {
-//     console.log ("la zapatilla " + zapatillaBuscada + " no esta disponible")
-// }
-
-// zapatillasDisponibles.splice(3, 1, "new balance 550")
-// console.log ("catalogo actualizado")
-
-
-// function mostrarZapatillas (lista) {
-//     console.log ("zapatillas disponibles")
-
-//     for (const zapatilla of lista) {
-//         console.log ("producto: " + zapatilla)
-//     }
-//     console.log ("total de productos: " + lista.length)
-// }
-
-// mostrarZapatillas(zapatillasDisponibles)
-
-
-
-function comprarZapatillas() {
-
-let continuar = "si"
-while (continuar === "si") {
-
-    let opcion = prompt (
-    "Elegi una zapatilla:\n" +
-    "1 - Nike Air Force\n" + 
-    "2 - Adidas Campus\n" +
-    "3- Jordan Retro 4"
-)
-
-    switch (opcion) {
-
-case "1":
-    if (nike.stock > 0) {
-        nike.vender()
-        total = calcularTotal(total, nike.precio)
-        console.log("Nike Air Force agregado al carrito")
-    } else {
-        console.log("No hay stock disponible")
-    }
-    break
-
-    case "2":
-        if (adidas.stock > 0) {
-            adidas.vender()
-            total = calcularTotal (total, adidas.precio)
-            console.log ("Adidas Campus agragada al carrito")
-        } else {
-            console.log ("No hay stock disponible")
-        }
-        break
-
-    case "3":
-        if (jordan.stock > 0) {
-            jordan.vender()
-            total = calcularTotal (total, jordan.precio)
-            console.log ("Jordan retro fue agregada al carrito")
-        } else {
-            console.log ("No hay stock disponible")
-        }
-        break
-
-    default:
-    console.log ("Producto no disponible")
-}
-continuar = prompt ("desea continuar comprando? si/no")
-if (continuar === "si") {
-    console.log ("Continuemos comprando")
-}
-else {
-    mostrarTotal(total)
-    console.log("Stock final de Nike: " + nike.stock)
-    console.log("Stock final de Adidas: " + adidas.stock)
-    console.log("Stock final de Jordan: " + jordan.stock)
-    console.log ("Gracias por tu compra " + nombre)
-}
-}
-}
